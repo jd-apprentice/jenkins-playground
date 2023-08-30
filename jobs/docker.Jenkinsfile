@@ -10,7 +10,9 @@ pipeline {
         }
         stage('Build') {
             steps {
-                docker.build('node:18-alpine')
+                script {
+                    docker.build('node:18-alpine')
+                }
             }
         }
         stage('Deploy') {
@@ -22,3 +24,4 @@ pipeline {
         }
     }
 }
+
