@@ -1,0 +1,3 @@
+[submodule "apps/infobae"]
+	path = apps/infobae
+	url = git@github.com:jd-apprentice/infobae-api.git
