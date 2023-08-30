@@ -1,7 +1,7 @@
-// Build jenkins job with docker agent
+#!/usr/bin/env groovy
 
 pipeline {
-    agent None
+    agent none
     stages {
         stage('Checkout') {
             steps {
