@@ -1,9 +1,12 @@
 pipeline {
     agent any
+    tools {
+        nodejs '20.5.1'
+    }
     stages {
-        stage('build') {
+        stage('Build') {
             steps {
-                sh 'node --version'
+                sh 'npm --version'
             }
         }
     }
