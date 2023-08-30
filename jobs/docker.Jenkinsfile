@@ -1,27 +1,31 @@
 #!/usr/bin/env groovy
 
 pipeline {
-    agent none
+    agent any
+
     stages {
         stage('Checkout') {
             steps {
                 checkout scm
             }
         }
+
         stage('Build') {
-            steps {
-                script {
-                    docker.build('node:18-alpine')
+            agent {
+                docker {
+                    image 'docker:latest'
                 }
             }
-        }
-        stage('Deploy') {
             steps {
-                script {
-                    docker.image('node:18-alpine').run('node --version')
-                }
+                sh 'docker build -t my-node-app:latest .'
+            }
+        }
+
+        stage('Deploy') {
+            agent any
+            steps {
+                sh 'docker run my-node-app:latest node --version'
             }
         }
     }
 }
-
