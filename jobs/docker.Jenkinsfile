@@ -1,30 +1,37 @@
 #!/usr/bin/env groovy
 
 pipeline {
+    environment {
+        registry = 'dyallo/dolar-hoy-api'
+        registryCredential = credentials('dockerhub')
+        dockerImage = ''
+    }
     agent any
-
     stages {
-        stage('Checkout') {
+        stage('Cloning our Git') {
             steps {
-                checkout scm
+                git 'https://github.com/jd-apprentice/dolar-hoy-api.git'
             }
         }
-
-        stage('Build') {
-            agent {
-                docker {
-                    image 'docker:latest'
+        stage('Building our image') {
+            steps {
+                script {
+                    dockerImage = docker.build registry + ":$BUILD_NUMBER"
                 }
             }
+        }
+        stage('Deploy our image') {
             steps {
-                sh 'docker build -t my-node-app:latest .'
+                script {
+                    docker.withRegistry('', registryCredential) {
+                        dockerImage.push()
+                    }
+                }
             }
         }
-
-        stage('Deploy') {
-            agent any
+        stage('Cleaning up') {
             steps {
-                sh 'docker run my-node-app:latest node --version'
+                sh "docker rmi $registry:$BUILD_NUMBER"
             }
         }
     }
