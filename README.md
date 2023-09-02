@@ -10,6 +10,12 @@ Repository with the purpose of learning and playing around with Jenkins, Kuberne
 make
 ```
 
+## Run
+
+```bash
+make run
+```
+
 ## Others
 
 Jobs are on the `jobs` folder
