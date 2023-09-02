@@ -1,6 +1,6 @@
 FROM jenkins/jenkins:2.414.1-jdk17
 USER root
-RUN apt-get update && apt-get install -y lsb-release sudo apt-transport-https ca-certificates curl gnupg2 software-properties-common
+RUN apt-get update && apt-get install -y lsb-release apt-transport-https ca-certificates curl gnupg2 software-properties-common
 RUN curl -fsSLo /usr/share/keyrings/docker-archive-keyring.asc \
   https://download.docker.com/linux/debian/gpg
 RUN curl -fsSL https://download.docker.com/linux/debian/gpg | apt-key add -
