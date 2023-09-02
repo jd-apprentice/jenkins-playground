@@ -1,37 +1,17 @@
 #!/usr/bin/env groovy
 
+// node:18.17.1-alpine3.18
+// ruby:3.2.2-alpine3.18
+// python:3.11.5-alpine3.18
+// php:8.2.9-alpine3.18
+// golang:1.21.0-alpine3.18
+
 pipeline {
-    environment {
-        registry = 'dyallo/dolar-hoy-api'
-        registryCredential = credentials('dockerhub')
-        dockerImage = ''
-    }
-    agent any
+    agent { docker { image 'node:18.17.1-alpine3.18' } }
     stages {
-        stage('Cloning our Git') {
+        stage('build') {
             steps {
-                git 'https://github.com/jd-apprentice/dolar-hoy-api.git'
-            }
-        }
-        stage('Building our image') {
-            steps {
-                script {
-                    dockerImage = docker.build registry + ":$BUILD_NUMBER"
-                }
-            }
-        }
-        stage('Deploy our image') {
-            steps {
-                script {
-                    docker.withRegistry('', registryCredential) {
-                        dockerImage.push()
-                    }
-                }
-            }
-        }
-        stage('Cleaning up') {
-            steps {
-                sh "docker rmi $registry:$BUILD_NUMBER"
+                sh 'node --version'
             }
         }
     }
