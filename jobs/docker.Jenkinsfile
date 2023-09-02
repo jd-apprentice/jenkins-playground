@@ -7,11 +7,18 @@
 // golang:1.21.0-alpine3.18
 
 pipeline {
-    agent { docker { image 'node:18.17.1-alpine3.18' } }
+    agent none
     stages {
-        stage('build') {
+        stage('node') {
+            agent { docker { image 'node:18.17.1-alpine3.18' } }
             steps {
                 sh 'node --version'
+            }
+        }
+        stage('python') {
+            agent { docker { image 'python:3.11.5-alpine3.18' } }
+            steps {
+                sh 'python --version'
             }
         }
     }
