@@ -1,8 +1,12 @@
 # Playground
 
-![wallpaper](readme.png)
+![wallpaper](/assets/readme.png)
 
 Repository with the purpose of learning and playing around with Jenkins, Kubernetes and other tools.
+
+## Idea
+
+![idea](/assets/idea.png)
 
 ## Requirements
 
