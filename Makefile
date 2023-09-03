@@ -6,17 +6,20 @@ IGNORE=2>/dev/null
 exec: network build run
 
 network:
-	-docker network create jenkins 1> logs/network.log 2> logs/network.err
+	-docker network create $(IMAGE_NAME) 1> logs/network.log 2> logs/network-err.log
 
 build:
-	cd docker && docker build -t $(IMAGE_NAME):$(VERSION) -f $(IMAGE_FILE).Dockerfile . 2> logs/build.err
+	cd docker && docker build -t $(IMAGE_NAME):$(VERSION) -f $(IMAGE_FILE).Dockerfile .
+
+enter:
+	docker exec -it $(IMAGE_NAME) bash
 
 run:
-	docker run \   
-	--name jenkins \
+	docker run \
+	--name $(IMAGE_NAME) \
 	--restart=on-failure \
 	--detach \
-	--network jenkins \
+	--network $(IMAGE_NAME) \
 	--env DOCKER_HOST=tcp://docker:2376 \
 	--env DOCKER_CERT_PATH=/certs/client \
 	--env DOCKER_TLS_VERIFY=1 \
@@ -26,9 +29,10 @@ run:
 	--volume $(which docker):/usr/bin/docker \
 	--volume jenkins-data:/var/jenkins_home \
 	--volume jenkins-docker-certs:/certs/client:ro \
-	jenkins:4.414.1-1
+	$(IMAGE_NAME):$(VERSION)
 
 clear:
+	-docker network rm jenkins $(IGNORE)
 	-docker rm -f $(IMAGE_NAME) $(IGNORE)
 	-docker volume rm jenkins-data $(IGNORE)
 	-docker volume rm jenkins-docker-certs $(IGNORE)
