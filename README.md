@@ -23,8 +23,8 @@ make exec-docker
 
 ## Others
 
-Anything automation related is on the `Makefile`
-Jobs are on the `jobs` folder
-Docker images are on the `docker` folder
-There is a outside app linked with a submodule on the `app` folder
-Logs are being store but ignored on the `logs` folder
+- Anything automation related is on the `Makefile`
+- Jobs are on the `jobs` folder
+- Docker images are on the `docker` folder
+- There is a outside app linked with a submodule on the `app` folder
+- Logs are being store but ignored on the `logs` folder
