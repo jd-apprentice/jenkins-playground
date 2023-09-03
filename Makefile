@@ -2,8 +2,13 @@ IMAGE_NAME=jenkins
 IMAGE_FILE=Jenkins
 VERSION=4.414.1-1
 IGNORE=2>/dev/null
+WAR_FILE=~/Downloads/jenkins
 
-exec: network build run
+exec:
+	cd ~/Downloads && wget https://get.jenkins.io/war-stable/2.414.1/jenkins.war
+	$(MAKE) java WAR_FILE=$(WAR_FILE)
+
+exec-docker: network build run
 
 network:
 	-docker network create $(IMAGE_NAME) 1> logs/network.log 2> logs/network-err.log
@@ -14,9 +19,19 @@ build:
 enter:
 	docker exec -it $(IMAGE_NAME) bash
 
+root:
+	docker exec -u root -it $(IMAGE_NAME) bash
+
+regenerate:
+	docker-machine regenerate-certs $(IMAGE_NAME)
+
+java:
+	java -jar $(WAR_FILE).war
+
 run:
 	docker run \
 	--name $(IMAGE_NAME) \
+	--privileged \
 	--restart=on-failure \
 	--detach \
 	--network $(IMAGE_NAME) \

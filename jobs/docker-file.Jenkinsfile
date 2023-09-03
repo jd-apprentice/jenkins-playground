@@ -1,24 +1,14 @@
 #!/usr/bin/env groovy
 
 pipeline {
-    agent none
-    stages {
-        stage('checkout') {
-            agent any
-            steps {
-                git(
-                    branch: 'main',
-                    url: 'https://github.com/jd-apprentice/jenkins-playground',
-                )
-            }
+    agent {
+        dockerfile {
+            filename 'Node.Dockerfile'
+            dir '../docker'
         }
-        stage('build') {
-            agent {
-                dockerfile {
-                    filename 'Node.Dockerfile'
-                    dir '../docker'
-                }
-            }
+    }
+    stages {
+        stage('node') {
             steps {
                 sh 'node --version'
             }
