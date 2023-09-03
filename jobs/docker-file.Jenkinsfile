@@ -15,8 +15,7 @@ pipeline {
         stage('build') {
             agent {
                 dockerfile {
-                    filename 'Node.Dockerfile'
-                    dir '../docker'
+                    filename 'docker/Node.Dockerfile'
                 }
             }
             steps {
